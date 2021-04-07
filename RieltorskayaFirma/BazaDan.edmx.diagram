@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4e6018a661e54268b28a0ac25721a61f" Name="Diagram1" ZoomLevel="107">
+        <EntityTypeShape EntityType="rlarionovModel.Agents" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="rlarionovModel.Apartments" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rlarionovModel.Cities" Width="1.5" PointX="2.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="rlarionovModel.Clients" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="rlarionovModel.Needs" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rlarionovModel.Offers" Width="1.5" PointX="6" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rlarionovModel.Streets" Width="1.5" PointX="4.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="rlarionovModel.sysdiagrams" Width="1.5" PointX="6.75" PointY="8.625" IsExpanded="true" />
+        <AssociationConnector Association="rlarionovModel.FK_Needs_Agents" ManuallyRouted="false" />
+        <AssociationConnector Association="rlarionovModel.FK_Offers_Agents" ManuallyRouted="false" />
+        <AssociationConnector Association="rlarionovModel.FK_Needs_Apartments" ManuallyRouted="false" />
+        <AssociationConnector Association="rlarionovModel.FK_Offers_Apartments" ManuallyRouted="false" />
+        <AssociationConnector Association="rlarionovModel.FK_Needs_Clients" ManuallyRouted="false" />
+        <AssociationConnector Association="rlarionovModel.FK_Offers_Clients" ManuallyRouted="false" />
+        <AssociationConnector Association="rlarionovModel.FK_Apartments_Apartments" />
+        <AssociationConnector Association="rlarionovModel.FK_Apartments_Streets" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
