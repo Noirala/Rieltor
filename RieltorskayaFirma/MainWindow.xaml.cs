@@ -59,13 +59,13 @@ namespace RieltorskayaFirma
         private void Apartmnets_Click(object sender, RoutedEventArgs e)
         {
             var ApartmentsList = new ApartmentsList();
-            ApartmentsList.Show();
+            ApartmentsList.ShowDialog();
         }
 
         private void Clients_Click(object sender, RoutedEventArgs e)
         {
             var ClientsList = new ClientsList();
-            ClientsList.Show();
+            ClientsList.ShowDialog();
         }
     }
 }

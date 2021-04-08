@@ -16,18 +16,51 @@
             <Button x:Name="AddButton" Content="Добавить" Click="AddButton_Click"></Button>
             <Button x:Name="BackButton" Content="Назад" Click="BackButton_Click"></Button>
         </StackPanel>
-        
+
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <!-- grid поддерживает автоматическую высоту (и ширину) ячейки - по содержимому -->
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <!-- WrapPanel переносит вложенные элементы на следующую строку (колонку)  -->
             <WrapPanel
             ItemHeight="40px">
-                <Button Content="button1"/>
+                <Label Content="Улица" VerticalAlignment="Center"/>
+                <ComboBox
+                    Width="150"
+                    x:Name="StreetFilter"
+                    VerticalAlignment="Center"
+                    SelectedIndex="0"
+                    SelectionChanged="StreetFilter_SelectionChanged"
+                    ItemsSource="{Binding StreetsList}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Label Content="Искать" VerticalAlignment="Center"/>
+                <TextBox
+                    Width="200"
+                    VerticalAlignment="Center"
+                    x:Name="SearchFilterTextBox" KeyUp="SearchFilterTextBox_KeyUp"></TextBox>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Количество комнат:" VerticalAlignment="Center"/>
+                    <RadioButton
+                    GroupName="Rooms"
+                    Tag="1"
+                    Content="По возрастанию"
+                    IsChecked="True"
+                    Checked="RadioButton_Checked"
+                    VerticalAlignment="Center"/>
+                    <RadioButton
+                    GroupName="Rooms"
+                    Tag="2"
+                    Content="По убыванию"
+                    Checked="RadioButton_Checked"
+                    VerticalAlignment="Center"/>
+                </StackPanel>
             </WrapPanel>
             <DataGrid 
                 x:Name="ApartmentsDataGrid"
@@ -35,6 +68,18 @@
                 CanUserAddRows="False"
                 AutoGenerateColumns="False"
                 ItemsSource="{Binding ApartmentsListView}">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Rooms}" Value="1">
+                                <Setter Property="Background" Value="LightGreen"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding TotalAreaBigger50}" Value="true">
+                                <Setter Property="Background" Value="#FFB9DEFF"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn 
                         Width="100"
@@ -82,6 +127,10 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="{Binding SelectedRows,StringFormat=Выделено {0}/&#xA0;}"/>
+                <TextBlock Text="{Binding TotalRows}"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

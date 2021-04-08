@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace RieltorskayaFirma
 {
-    /// <summary>
-    /// Логика взаимодействия для ApartmentsList.xaml
-    /// </summary>
     public partial class ApartmentsList : Window, INotifyPropertyChanged
     {
 
@@ -29,15 +26,52 @@ namespace RieltorskayaFirma
         {
             get
             {
-                return _ApartamentsListView;
+                var res = _ApartamentsListView;
+                if (_StreetFilterValue > 0)
+                    res = res.Where(ai => ai.AddressStreetId == _StreetFilterValue);
+
+                if (SearchFilter != "")
+                    res = res.Where(ai => 
+                       (ai.Streets.Name.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0)
+                       || (ai.Cities.Name.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0)
+                   );
+
+                if (SortAsc) res = res.OrderBy(ai => ai.Rooms);
+                else res = res.OrderByDescending(ai => ai.Rooms);
+
+                return res;
             }
             set
             {
                 _ApartamentsListView = value;
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("ApartmentsListView"));
-                }
+                Invalidate();
+            }
+        }
+
+        public List<Streets> StreetsList { get; set; }
+
+        public int SelectedRows
+        {
+            get
+            {
+                return ApartmentsListView.Count();
+            }
+        }
+        public int TotalRows
+        {
+            get
+            {
+                return _ApartamentsListView.Count();
+            }
+        }
+
+        private void Invalidate()
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("ApartmentsListView"));
+                PropertyChanged(this, new PropertyChangedEventArgs("SelectedRows"));
+                PropertyChanged(this, new PropertyChangedEventArgs("TotalRows"));
             }
         }
 
@@ -46,6 +80,8 @@ namespace RieltorskayaFirma
             InitializeComponent();
             DataContext = this;
             ApartmentsListView = Core.DB.Apartments.ToArray();
+            StreetsList = Core.DB.Streets.ToList();
+            StreetsList.Insert(0, new Streets { Name = "Все улицы" });
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -90,6 +126,74 @@ namespace RieltorskayaFirma
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private int _StreetFilterValue = 0;
+        public int StreetFilterValue
+        {
+            get
+            {
+                return _StreetFilterValue;
+            }
+            set
+            {
+                _StreetFilterValue = value;
+                Invalidate();
+            }
+        }
+
+        private void StreetFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            StreetFilterValue = (StreetFilter.SelectedItem as Streets).Id;
+        }
+
+        private string _SearchFilter = "";
+        public string SearchFilter
+        {
+            get
+            {
+                return _SearchFilter;
+            }
+            set
+            {
+                _SearchFilter = value;
+                Invalidate();
+            }
+        }
+
+        private void SearchFilterTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            SearchFilter = SearchFilterTextBox.Text;
+        }
+
+        private bool _SortAsc = true;
+        public bool SortAsc
+        {
+            get
+            {
+                return _SortAsc;
+            }
+            set
+            {
+                _SortAsc = value;
+                Invalidate();
+            }
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            SortAsc = (sender as RadioButton).Tag.ToString() == "1";
+        }
+    }
+
+    public partial class Apartments
+    {
+        public bool TotalAreaBigger50
+        {
+            get
+            {
+                return TotalArea > 50;
+            }
         }
     }
 }
